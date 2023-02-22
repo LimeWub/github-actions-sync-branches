@@ -35,7 +35,7 @@ jobs:
         if: steps.changed-files-excluded.outputs.any_changed == 'true'
         run: |
           echo "Non-documentation files have been changed:"
-          for file in ${{ steps.changed-files.outputs.any_changed }}; do
+          for file in ${{ steps.changed-files-excluded.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
           echo "This action is exiting as a safety feature! Revert files before trying again!"
