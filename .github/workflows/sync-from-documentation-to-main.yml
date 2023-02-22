@@ -29,17 +29,17 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v35
         with:
-          files:
-            - documentation/**
-            - documentation-images/**
+          files: |
+            documentation/**
+            documentation-images/**
 
       - name: Get changed files excluding the docs
         id: changed-files-excluded
         uses: tj-actions/changed-files@v35
         with:
-          files_ignore:
-            - documentation/**
-            - documentation-images/**
+          files_ignore: |
+            documentation/**
+            documentation-images/**
 
       - name: Commit changes
         if: steps.changed-files-excluded.outputs.any_changed == 'false'
