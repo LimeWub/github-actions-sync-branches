@@ -1,0 +1,48 @@
+name: Sync from documentation to main
+
+permissions:
+  actions: write
+  contents: write
+
+on:
+  push:
+    branches:
+      - documentation-content
+    paths:
+      - documentation/**
+      - documentation-images/**
+
+jobs:
+  sync:
+    if: "startsWith(github.event.head_commit.message, '[NetlifyCMS]')"
+    name: Sync only the documentation content relevant folders from documentation-content into the main branch
+    steps:
+      - uses: actions/checkout@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+          fetch-depth: 0
+
+      - run: git checkout documentation-content documentation documentation-images
+
+      - name: Get changed files in the docs folder
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files:
+            - documentation/**
+            - documentation-images/**
+
+      - name: Get changed files excluding the docs
+        id: changed-files-excluded
+        uses: tj-actions/changed-files@v35
+        with:
+          files_ignore:
+            - documentation/**
+            - documentation-images/**
+
+      - name: Commit changes
+        if: steps.changed-files-excluded.outputs.any_changed == 'false'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[Automated] chore: update documentation/content to match branch documentation-content"
