@@ -16,6 +16,7 @@ jobs:
   sync:
     if: "startsWith(github.event.head_commit.message, '[NetlifyCMS]')"
     name: Sync only the documentation content relevant folders from documentation-content into the main branch
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
         with:
