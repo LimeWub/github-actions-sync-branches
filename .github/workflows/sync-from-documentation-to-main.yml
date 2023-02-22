@@ -31,8 +31,13 @@ jobs:
             documentation/**
             documentation-images/**
 
+      - name: Fail if files other than docs are changed
+        if: steps.changed-files-excluded.outputs.any_changed == 'true'
+        run: |
+          echo "Non-documentation files have been changed. This action is exiting as a safety feature."
+          exit 1
+
       - uses: everlytic/branch-merge@1.1.2
-        if: steps.changed-files-excluded.outputs.any_changed == 'false'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: "documentation-content"
