@@ -34,7 +34,11 @@ jobs:
       - name: Fail if files other than docs are changed
         if: steps.changed-files-excluded.outputs.any_changed == 'true'
         run: |
-          echo "Non-documentation files have been changed. This action is exiting as a safety feature."
+          echo "Non-documentation files have been changed:"
+          for file in ${{ steps.changed-files.outputs.any_changed }}; do
+            echo "$file was changed"
+          done
+          echo "This action is exiting as a safety feature! Revert files before trying again!"
           exit 1
 
       - uses: everlytic/branch-merge@1.1.2
