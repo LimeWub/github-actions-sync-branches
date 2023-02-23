@@ -27,6 +27,7 @@ jobs:
         id: changed-files-excluded
         uses: tj-actions/changed-files@v35
         with:
+          base_sha: ${{ github.sha }}
           files_ignore: |
             documentation/**
             documentation-images/**
